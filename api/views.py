@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import find_all_orders, create_customer_service, update_customer_service, find_all_customers
+from .services import find_all_orders, create_customer_service, update_customer_service, find_all_customers, delete_customer_service
 from django.db import DatabaseError
 
 
@@ -155,6 +155,17 @@ class UpdateCustomerView(APIView):
             )
 
             return Response(updated, status=status.HTTP_200_OK)
+
+        except DatabaseError as e:
+            return Response({"error": str(e)}, status=400)
+
+
+class DeleteCustomerView(APIView):
+    def delete(self, request, customerid):
+        try:
+            deleted = delete_customer_service(customerid)
+
+            return Response(deleted, status=status.HTTP_200_OK)
 
         except DatabaseError as e:
             return Response({"error": str(e)}, status=400)

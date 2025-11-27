@@ -134,3 +134,19 @@ def update_customer_service(
         row = cursor.fetchone()
 
     return dict(zip(columns, row))
+
+
+def delete_customer_service(customerid):
+    """
+    Llama a la función delete_customer() en PostgreSQL.
+    """
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT * FROM delete_customer(%s);
+        """, [customerid])
+
+        columns = [c[0] for c in cursor.description]
+        row = cursor.fetchone()
+
+    return dict(zip(columns, row))
